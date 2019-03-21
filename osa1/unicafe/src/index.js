@@ -20,6 +20,10 @@ const App = () => {
     setBad(bad + 1);
   };
 
+  const total = good + bad * -1;
+  const mean = total / (good + neutral + bad);
+  const positive = (good / (good + neutral + bad)) * 100;
+
   return (
     <div>
       <div>
@@ -33,6 +37,9 @@ const App = () => {
         <p>hyvä {good}</p>
         <p>neutraali {neutral}</p>
         <p>huono {bad}</p>
+        <p>yhteensä {total}</p>
+        <p>keskiarvo {mean}</p>
+        <p>positiivisia {positive} %</p>
       </div>
     </div>
   );
