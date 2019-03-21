@@ -48,8 +48,8 @@ const App = () => {
   };
 
   const total = good + neutral + bad;
-  const mean = (good + bad * -1) / total;
-  const positive = ((good / total) * 100).toString(10) + " %";
+  const mean = ((good + bad * -1) / total).toFixed(2);
+  const positive = ((good / total) * 100).toFixed(2).toString(10) + " %";
 
   return (
     <div>
