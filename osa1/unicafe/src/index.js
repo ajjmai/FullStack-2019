@@ -5,11 +5,30 @@ const Button = ({ handleClick, text }) => (
   <button onClick={handleClick}>{text}</button>
 );
 
-const Statistics = ({ text, value }) => {
+const Statistics = props => {
+  if (props.total === 0) {
+    return <p>Ei yhtään palautetta annettu</p>;
+  }
   return (
-    <p>
-      {text} {value}
-    </p>
+    <table>
+      <tbody>
+        <Statistic text="hyvä" value={props.good} />
+        <Statistic text="neutraali" value={props.neutral} />
+        <Statistic text="huono" value={props.bad} />
+        <Statistic text="yhteensä" value={props.total} />
+        <Statistic text="keskiarvo" value={props.mean} />
+        <Statistic text="positiivisia" value={props.positive} />
+      </tbody>
+    </table>
+  );
+};
+
+const Statistic = ({ text, value }) => {
+  return (
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
   );
 };
 
@@ -28,9 +47,9 @@ const App = () => {
     setBad(bad + 1);
   };
 
-  const total = good + bad * -1;
-  const mean = total / (good + neutral + bad);
-  const positive = ((good / (good + neutral + bad)) * 100).toString(10) + " %";
+  const total = good + neutral + bad;
+  const mean = (good + bad * -1) / total;
+  const positive = ((good / total) * 100).toString(10) + " %";
 
   return (
     <div>
@@ -42,12 +61,14 @@ const App = () => {
       </div>
       <div>
         <h1>Statistiikka</h1>
-        <Statistics text={"hyvä"} value={good} />
-        <Statistics text={"neutraali"} value={neutral} />
-        <Statistics text={"huono"} value={bad} />
-        <Statistics text={"yhteensä"} value={total} />
-        <Statistics text={"keskiarvo"} value={mean} />
-        <Statistics text={"positiivisia"} value={positive} />
+        <Statistics
+          good={good}
+          bad={bad}
+          neutral={neutral}
+          total={total}
+          mean={mean}
+          positive={positive}
+        />
       </div>
     </div>
   );
