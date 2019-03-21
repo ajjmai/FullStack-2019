@@ -1,15 +1,62 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 
-const App = props => {
+const Button = ({ handleClick, text }) => (
+  <button onClick={handleClick}>{text}</button>
+);
+
+const Votes = ({ votes }) => {
+  return <p>has {votes} votes</p>;
+};
+
+const MostVotedAnecdote = props => {
+  if (props.votes === 0) {
+    return <p>No votes yet</p>;
+  }
+  return (
+    <div>
+      {props.anecdotes[props.mostVotesIndex]}
+      <Votes votes={props.votes} />
+    </div>
+  );
+};
+
+const App = ({ anecdotes, points }) => {
   const [selected, setSelected] = useState(0);
+  const [votes, setVotes] = useState(0);
+  const [mostVotes, setMostVoted] = useState(0);
+  const [mostVotesIndex, setMostVotesIndex] = useState(0);
+
+  const nextAnecdote = () => {
+    const next = Math.floor(Math.random() * anecdotes.length);
+    setSelected(next);
+    setVotes(points[next]);
+  };
+
+  const voteAnecdote = () => {
+    points[selected] += 1;
+    setVotes(points[selected]);
+    const maxVotes = Math.max(...points);
+    const maxVotesIndex = points.indexOf(maxVotes);
+    setMostVoted(maxVotes);
+    setMostVotesIndex(maxVotesIndex);
+  };
 
   return (
     <div>
-      <div>{props.anecdotes[selected]}</div>
+      <h1>Anecdote of the day</h1>
+      <div>{anecdotes[selected]}</div>
+      <Votes votes={votes} />
       <div>
-        <button>next anecdote</button>
+        <Button handleClick={voteAnecdote} text="vote" />
+        <Button handleClick={nextAnecdote} text="next anecdote" />
       </div>
+      <h1>Anecdote with most votes</h1>
+      <MostVotedAnecdote
+        anecdotes={anecdotes}
+        votes={mostVotes}
+        mostVotesIndex={mostVotesIndex}
+      />
     </div>
   );
 };
@@ -23,4 +70,9 @@ const anecdotes = [
   "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it."
 ];
 
-ReactDOM.render(<App anecdotes={anecdotes} />, document.getElementById("root"));
+const points = new Array(anecdotes.length).fill(0);
+
+ReactDOM.render(
+  <App anecdotes={anecdotes} points={points} />,
+  document.getElementById("root")
+);
