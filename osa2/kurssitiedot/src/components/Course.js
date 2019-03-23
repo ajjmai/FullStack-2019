@@ -4,29 +4,32 @@ const Header = props => {
   return <h1>{props.course}</h1>;
 };
 
-const Content = props => {
-  return (
-    <div>
-      <Part part={props.parts[0]} />
-      <Part part={props.parts[1]} />
-      <Part part={props.parts[2]} />
-    </div>
-  );
+const Content = ({ parts }) => {
+  const rows = () => parts.map(part => <Part key={part.id} part={part} />);
+
+  return <div>{rows()}</div>;
 };
 
-const Part = props => {
+const Part = ({ part }) => {
   return (
     <p>
-      {props.part.name} {props.part.exercises}
+      {part.name} {part.exercises}
     </p>
   );
 };
 
-const Course = props => {
+const Total = ({ parts }) => {
+  const total = parts.map(part => part.exercises).reduce((s, p) => s + p);
+  console.log(total);
+  return <p>Yhteensä {total} tehtävää</p>;
+};
+
+const Course = ({ course }) => {
   return (
     <div>
-      <Header course={props.course.name} />
-      <Content parts={props.course.parts} />
+      <Header course={course.name} />
+      <Content parts={course.parts} />
+      <Total parts={course.parts} />
     </div>
   );
 };
