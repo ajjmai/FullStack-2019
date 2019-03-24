@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Person from "./components/Person";
+import axios from "axios";
 
 const PersonForm = props => {
   return (
@@ -36,11 +37,17 @@ const Persons = ({ persons }) => {
   );
 };
 
-const App = props => {
-  const [persons, setPersons] = useState(props.persons);
+const App = () => {
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filterRule, setFilterRule] = useState("");
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/persons").then(response => {
+      setPersons(response.data);
+    });
+  }, []);
 
   const personsToShow =
     filterRule === ""
