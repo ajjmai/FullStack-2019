@@ -9,7 +9,7 @@ const PersonForm = props => {
       </div>
       <div>
         numero:{" "}
-        <input nvalue={props.newNumber} onChange={props.handleNumberChange} />
+        <input value={props.newNumber} onChange={props.handleNumberChange} />
       </div>
       <div>
         <button type="submit">lisää</button>
@@ -40,14 +40,12 @@ const App = props => {
   const [persons, setPersons] = useState(props.persons);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
-  const [showAll, setShowAll] = useState(true);
+  const [filterRule, setFilterRule] = useState("");
 
-  const personsToShow = showAll
-    ? persons
-    : [
-        { name: "Arto Hellas", number: "040-123456" },
-        { name: "Martti Tienari", number: "040-123456" }
-      ];
+  const personsToShow =
+    filterRule === ""
+      ? persons
+      : persons.filter(p => p.name.toLowerCase().includes(filterRule));
 
   const addName = event => {
     event.preventDefault();
@@ -76,16 +74,10 @@ const App = props => {
 
   const handleFilter = event => {
     if (event.target.value !== "") {
-      setShowAll(false);
-      console.log(event.target.value);
-      filterPersons(event.target.value);
+      setFilterRule(event.target.value);
     } else {
-      setShowAll(true);
+      setFilterRule("");
     }
-  };
-
-  const filterPersons = rule => {
-    persons.filter(p => p.name.toLowerCase().includes(rule));
   };
 
   return (
