@@ -62,7 +62,20 @@ const App = () => {
     };
 
     if (persons.map(person => person.name).includes(newName)) {
-      window.alert(`${newName} on jo luettelossa`);
+      const person = persons.find(n => n.name === newName);
+      const id = person.id;
+      const changedNumber = { ...person, number: newNumber };
+
+      if (
+        window.confirm(
+          `${person.name} on jo luettelossa, korvataanko vanha numero uudella?`
+        )
+      ) {
+        personService.update(id, changedNumber).then(returnedName => {
+          setPersons(persons.map(p => (p.name !== newName ? p : returnedName)));
+        });
+      }
+      //window.alert(`${newName} on jo luettelossa`);
     } else {
       personService.create(nameObject).then(newName => {
         setPersons(persons.concat(newName));
