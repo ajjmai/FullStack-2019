@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Person from "./components/Person";
-import axios from "axios";
+import personService from "./services/persons";
 
 const PersonForm = props => {
   return (
@@ -19,19 +19,19 @@ const PersonForm = props => {
   );
 };
 
-const Filter = props => {
+const Filter = ({ handleFilter }) => {
   return (
     <div>
-      rajaa näytettäviä <input onChange={props.handleFilter} />
+      rajaa näytettäviä <input onChange={handleFilter} />
     </div>
   );
 };
 
-const Persons = ({ persons }) => {
+const Persons = ({ persons, deleteName }) => {
   return (
     <div>
       {persons.map(person => (
-        <Person key={person.name} person={person} />
+        <Person key={person.id} person={person} deleteName={deleteName} />
       ))}
     </div>
   );
@@ -44,8 +44,8 @@ const App = () => {
   const [filterRule, setFilterRule] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then(response => {
-      setPersons(response.data);
+    personService.getAll().then(initialData => {
+      setPersons(initialData);
     });
   }, []);
 
@@ -64,13 +64,22 @@ const App = () => {
     if (persons.map(person => person.name).includes(newName)) {
       window.alert(`${newName} on jo luettelossa`);
     } else {
-      axios.post("http://localhost:3001/persons", nameObject).then(response => {
-        setPersons(persons.concat(response.data));
+      personService.create(nameObject).then(newName => {
+        setPersons(persons.concat(newName));
       });
     }
 
     setNewName("");
     setNewNumber("");
+  };
+
+  const deleteName = id => {
+    const person = persons.find(n => n.id === id);
+    if (window.confirm(`Poistetaanko ${person.name}?`)) {
+      personService
+        .deleteEntry(id)
+        .then(setPersons(persons.filter(n => n.id !== id)));
+    }
   };
 
   const handleNameChange = event => {
@@ -102,7 +111,7 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h2>Numerot</h2>
-      <Persons persons={personsToShow} />
+      <Persons persons={personsToShow} deleteName={deleteName} />
     </div>
   );
 };

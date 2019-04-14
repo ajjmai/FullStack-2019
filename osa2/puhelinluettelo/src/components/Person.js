@@ -1,10 +1,11 @@
 import React from "react";
 
-const Person = ({ person }) => {
+const Person = ({ person, deleteName }) => {
   return (
-    <p>
+    <div>
       {person.name} {person.number}{" "}
-    </p>
+      <button onClick={() => deleteName(person.id)}>poista</button>
+    </div>
   );
 };
 
