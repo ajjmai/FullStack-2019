@@ -1,9 +1,17 @@
 .message {
-  color: blue;
-  background: lightskyblue;
   font-size: 20px;
   border-style: solid;
   border-radius: 5px;
   padding: 10px;
   margin-bottom: 10px;
+}
+
+.notification {
+  color: blue;
+  background: lightskyblue;
+}
+
+.error {
+  color: red;
+  background: lightpink;
 }
