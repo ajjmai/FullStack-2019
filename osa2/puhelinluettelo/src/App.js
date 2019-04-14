@@ -64,7 +64,9 @@ const App = () => {
     if (persons.map(person => person.name).includes(newName)) {
       window.alert(`${newName} on jo luettelossa`);
     } else {
-      setPersons(persons.concat(nameObject));
+      axios.post("http://localhost:3001/persons", nameObject).then(response => {
+        setPersons(persons.concat(response.data));
+      });
     }
 
     setNewName("");
