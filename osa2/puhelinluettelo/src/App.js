@@ -105,7 +105,7 @@ const App = () => {
               `Henkilö ${person.name} oli jo poistettu palvelimelta.`
             );
             setTimeout(() => {
-              setNotificationMessage(null);
+              setErrorMessage(null);
             }, 5000);
             setPersons(persons.filter(p => p.name !== newName));
           });
@@ -124,7 +124,7 @@ const App = () => {
           //console.log(error.response.data);
           setErrorMessage(`${error.response.data.error}`);
           setTimeout(() => {
-            setNotificationMessage(null);
+            setErrorMessage(null);
           }, 5000);
         });
     }
