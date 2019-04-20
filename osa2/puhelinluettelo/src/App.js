@@ -71,6 +71,7 @@ const App = () => {
       ? persons
       : persons.filter(p => p.name.toLowerCase().includes(filterRule));
 
+  // ADD  new person
   const addName = event => {
     event.preventDefault();
     const nameObject = {
@@ -78,21 +79,21 @@ const App = () => {
       number: newNumber
     };
 
+    // if person already exists, change number
     if (persons.map(person => person.name).includes(newName)) {
-      const person = persons.find(n => n.name === newName);
-      const id = person.id;
-      const changedNumber = { ...person, number: newNumber };
-
       if (
         window.confirm(
-          `${person.name} on jo luettelossa, korvataanko vanha numero uudella?`
+          `${newName} on jo luettelossa, korvataanko vanha numero uudella?`
         )
       ) {
+        const person = persons.find(n => n.name === newName);
+        const changedNumber = { ...person, number: newNumber };
+
         personService
-          .update(id, changedNumber)
+          .update(person.id, changedNumber)
           .then(returnedName => {
             setPersons(
-              persons.map(p => (p.name !== newName ? p : returnedName))
+              persons.map(p => (p.id !== person.id ? p : returnedName))
             );
             setNotificationMessage(`Muutettiin numero: ${person.name}`);
             setTimeout(() => {
@@ -122,6 +123,7 @@ const App = () => {
     setNewNumber("");
   };
 
+  // DELETE person
   const deleteName = id => {
     const person = persons.find(n => n.id === id);
     if (window.confirm(`Poistetaanko ${person.name}?`)) {
