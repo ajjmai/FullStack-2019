@@ -111,13 +111,19 @@ const App = () => {
           });
       }
     } else {
-      personService.create(nameObject).then(newName => {
-        setPersons(persons.concat(newName));
-        setNotificationMessage(`Lisättiin ${newName.name}`);
-        setTimeout(() => {
-          setNotificationMessage(null);
-        }, 5000);
-      });
+      personService
+        .create(nameObject)
+        .then(newName => {
+          setPersons(persons.concat(newName));
+          setNotificationMessage(`Lisättiin ${newName.name}`);
+          setTimeout(() => {
+            setNotificationMessage(null);
+          }, 5000);
+        })
+        .catch(error => {
+          //console.log(error.response.data);
+          setErrorMessage(`${error.response.data.error}`);
+        });
     }
     setNewName("");
     setNewNumber("");
