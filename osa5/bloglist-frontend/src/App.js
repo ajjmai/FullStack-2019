@@ -2,6 +2,21 @@ import React, { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import "./index.css";
+
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null;
+  }
+  return <div className="notification message">{message}</div>;
+};
+
+const ErrorMessage = ({ message }) => {
+  if (message === null) {
+    return null;
+  }
+  return <div className="error message">{message}</div>;
+};
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -10,6 +25,7 @@ const App = () => {
   const [newUrl, setNewUrl] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [notificationMessage, setNotificationMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [user, setUser] = useState(null);
 
@@ -48,6 +64,12 @@ const App = () => {
 
   const handleLogout = event => {
     event.preventDefault();
+    setNotificationMessage(
+      `${user.name === null ? user.username : user.name} has logged out`
+    );
+    setTimeout(() => {
+      setNotificationMessage(null);
+    }, 5000);
     setUser(null);
     window.localStorage.clear();
   };
@@ -63,12 +85,27 @@ const App = () => {
 
     console.log(blogObject);
 
-    blogService.create(blogObject).then(returnedBlog => {
-      setBlogs(blogs.concat(returnedBlog));
-      setNewTitle("");
-      setNewAuthor("");
-      setNewUrl("");
-    });
+    blogService
+      .create(blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog));
+        setNotificationMessage(
+          `A new blog: ${newTitle} by ${newAuthor} was added`
+        );
+        setTimeout(() => {
+          setNotificationMessage(null);
+        }, 5000);
+      })
+      .catch(error => {
+        setErrorMessage(`${error.response.data.error}`);
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
+      });
+
+    setNewTitle("");
+    setNewAuthor("");
+    setNewUrl("");
   };
 
   const loginForm = () => (
@@ -100,7 +137,6 @@ const App = () => {
 
   const blogList = user => (
     <div>
-      <h2>Blogs</h2>
       {user.name === null ? user.username : user.name} is logged in
       <br />
       <br />
@@ -147,6 +183,9 @@ const App = () => {
 
   return (
     <div>
+      <h1>Bloglist</h1>
+      <Notification message={notificationMessage} />
+      <ErrorMessage message={errorMessage} />
       <div>{user === null ? loginForm() : blogList(user)}</div>
       <div />
     </div>
