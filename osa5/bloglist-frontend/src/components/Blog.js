@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Blog = ({ blog, added }) => {
+const Blog = ({ blog, addedBy, handleDelete }) => {
   const [showBlogInfo, setShowBlogInfo] = useState(false);
 
   const showWhenVisible = { display: showBlogInfo ? "" : "none" };
@@ -29,7 +29,8 @@ const Blog = ({ blog, added }) => {
           {blog.likes} likes{" "}
           <button onClick={() => console.log("like")}>like</button>
         </p>
-        <p>added by {added}</p>
+        <p>added by {addedBy}</p>
+        <button onClick={() => handleDelete(blog.id)}>delete</button>
       </div>
     </div>
   );

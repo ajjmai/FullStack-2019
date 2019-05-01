@@ -111,6 +111,21 @@ const App = () => {
     setNewUrl("");
   };
 
+  const deleteBlog = id => {
+    const blog = blogs.find(b => b.id === id);
+    if (window.confirm(`Delete blog ${blog.title} by ${blog.author}`)) {
+      blogService.deleteBlog(id).then(response => {
+        setBlogs(blogs.filter(b => b.id !== id));
+        setNotificationMessage(
+          `Blog ${blog.title} by ${blog.author} was removed from bloglist`
+        );
+        setTimeout(() => {
+          setNotificationMessage(null);
+        }, 5000);
+      });
+    }
+  };
+
   const loginForm = () => (
     <div>
       <h2>Log in</h2>
@@ -136,7 +151,12 @@ const App = () => {
       {blogForm()}
       <h2>Blogs</h2>
       {blogs.map(blog => (
-        <Blog key={blog.id} blog={blog} added={blog.user.name} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          addedBy={blog.user.name}
+          handleDelete={deleteBlog}
+        />
       ))}
     </div>
   );
