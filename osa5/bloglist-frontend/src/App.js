@@ -3,6 +3,9 @@ import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import "./index.css";
+import BlogForm from "./components/BlogForm";
+import Togglable from "./components/Togglable";
+import LoginForm from "./components/LoginForm";
 
 const Notification = ({ message }) => {
   if (message === null) {
@@ -111,27 +114,13 @@ const App = () => {
   const loginForm = () => (
     <div>
       <h2>Log in</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          username
-          <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          password
-          <input
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button type="submit">Log in</button>
-      </form>
+      <LoginForm
+        username={username}
+        password={password}
+        handleSubmit={handleLogin}
+        handleUsernameChange={({ target }) => setUsername(target.value)}
+        handlePasswordChange={({ target }) => setPassword(target.value)}
+      />
     </div>
   );
 
@@ -143,6 +132,7 @@ const App = () => {
       <div>
         <button onClick={handleLogout}>Log out</button>
       </div>
+      <h2>Add new blog</h2>
       {blogForm()}
       <h2>Blogs</h2>
       {blogs.map(blog => (
@@ -151,35 +141,23 @@ const App = () => {
     </div>
   );
 
-  const blogForm = () => (
-    <div>
-      <h2>Add new blog</h2>
-      <form onSubmit={addBlog}>
-        <div>
-          Title:
-          <input
-            value={newTitle}
-            onChange={({ target }) => setNewTitle(target.value)}
+  const blogForm = () => {
+    return (
+      <div>
+        <Togglable buttonLable="Add blog">
+          <BlogForm
+            newTitle={newTitle}
+            newAuthor={newAuthor}
+            newUrl={newUrl}
+            handleNewTitle={({ target }) => setNewTitle(target.value)}
+            handleNewAuthor={({ target }) => setNewAuthor(target.value)}
+            handleNewUrl={({ target }) => setNewUrl(target.value)}
+            handleSubmit={addBlog}
           />
-        </div>
-        <div>
-          Author:
-          <input
-            value={newAuthor}
-            onChange={({ target }) => setNewAuthor(target.value)}
-          />
-        </div>
-        <div>
-          Url:
-          <input
-            value={newUrl}
-            onChange={({ target }) => setNewUrl(target.value)}
-          />
-        </div>
-        <button type="submit">save</button>
-      </form>
-    </div>
-  );
+        </Togglable>
+      </div>
+    );
+  };
 
   return (
     <div>
