@@ -154,8 +154,9 @@ const App = () => {
         <Blog
           key={blog.id}
           blog={blog}
-          addedBy={blog.user.name}
+          addedBy={blog.user}
           handleDelete={deleteBlog}
+          user={user}
         />
       ))}
     </div>
