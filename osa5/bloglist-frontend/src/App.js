@@ -34,7 +34,6 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs => setBlogs(blogs));
-    //console.log(blogs);
   }, []);
 
   // store user info to localStorage, no need to log in every time
@@ -138,18 +137,19 @@ const App = () => {
     console.log(liked.user.username);
 
     blogService.update(id, liked).then(returnedBlog => {
-      setBlogs(blogs.map(b => (b.id !== blog.id ? b : returnedBlog)));
+      setBlogs(
+        sortByLikes(blogs.map(b => (b.id !== blog.id ? b : returnedBlog)))
+      );
       console.log(returnedBlog.user.username);
     });
-    //console.log(user);
   };
 
-  /** 
-  const sortByLikes = () => {
-    blogs.sort((bA, bB) => {
+  const sortByLikes = notSortedBlogs => {
+    const sortedBlogs = notSortedBlogs.sort((bA, bB) => {
       return bB.likes - bA.likes;
     });
-  };*/
+    return sortedBlogs;
+  };
 
   const loginForm = () => (
     <div>
@@ -212,7 +212,6 @@ const App = () => {
       <Notification message={notificationMessage} />
       <ErrorMessage message={errorMessage} />
       <div>{user === null ? loginForm() : blogList(user)}</div>
-      <div />
     </div>
   );
 };

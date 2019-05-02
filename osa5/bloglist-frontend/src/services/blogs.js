@@ -7,9 +7,16 @@ const setToken = newToken => {
   token = `bearer ${newToken}`;
 };
 
+const sortByLikes = blogs => {
+  const sortedBlogs = blogs.sort((bA, bB) => {
+    return bB.likes - bA.likes;
+  });
+  return sortedBlogs;
+};
+
 const getAll = () => {
   const request = axios.get(baseUrl);
-  return request.then(response => response.data);
+  return request.then(response => sortByLikes(response.data));
 };
 
 const create = async newObject => {
