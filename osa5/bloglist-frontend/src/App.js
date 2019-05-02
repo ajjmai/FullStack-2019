@@ -34,8 +34,10 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs => setBlogs(blogs));
+    //console.log(blogs);
   }, []);
 
+  // store user info to localStorage, no need to log in every time
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
     if (loggedUserJSON) {
@@ -45,6 +47,7 @@ const App = () => {
     }
   }, []);
 
+  // login
   const handleLogin = async event => {
     event.preventDefault();
     try {
@@ -65,6 +68,7 @@ const App = () => {
     }
   };
 
+  // log out
   const handleLogout = event => {
     event.preventDefault();
     setNotificationMessage(
@@ -77,6 +81,7 @@ const App = () => {
     window.localStorage.clear();
   };
 
+  // add new blog to bloglis
   const addBlog = event => {
     event.preventDefault();
     const blogObject = {
@@ -111,6 +116,7 @@ const App = () => {
     setNewUrl("");
   };
 
+  // delete blog from bloglist
   const deleteBlog = id => {
     const blog = blogs.find(b => b.id === id);
     if (window.confirm(`Delete blog ${blog.title} by ${blog.author}`)) {
@@ -125,6 +131,25 @@ const App = () => {
       });
     }
   };
+
+  const likeBlog = id => {
+    const blog = blogs.find(b => b.id === id);
+    const liked = { ...blog, likes: blog.likes + 1 };
+    console.log(liked.user.username);
+
+    blogService.update(id, liked).then(returnedBlog => {
+      setBlogs(blogs.map(b => (b.id !== blog.id ? b : returnedBlog)));
+      console.log(returnedBlog.user.username);
+    });
+    //console.log(user);
+  };
+
+  /** 
+  const sortByLikes = () => {
+    blogs.sort((bA, bB) => {
+      return bB.likes - bA.likes;
+    });
+  };*/
 
   const loginForm = () => (
     <div>
@@ -157,6 +182,7 @@ const App = () => {
           addedBy={blog.user}
           handleDelete={deleteBlog}
           user={user}
+          likeBlog={likeBlog}
         />
       ))}
     </div>
