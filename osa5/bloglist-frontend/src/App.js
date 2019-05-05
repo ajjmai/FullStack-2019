@@ -165,7 +165,7 @@ const App = () => {
   );
 
   const blogList = user => (
-    <div>
+    <div className="blogList">
       {user.name === null ? user.username : user.name} is logged in
       <br />
       <br />
