@@ -119,7 +119,7 @@ const App = () => {
   const deleteBlog = id => {
     const blog = blogs.find(b => b.id === id);
     if (window.confirm(`Delete blog ${blog.title} by ${blog.author}`)) {
-      blogService.deleteBlog(id).then(response => {
+      blogService.deleteBlog(id).then(() => {
         setBlogs(blogs.filter(b => b.id !== id));
         setNotificationMessage(
           `Blog ${blog.title} by ${blog.author} was removed from bloglist`
