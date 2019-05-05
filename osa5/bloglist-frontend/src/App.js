@@ -133,14 +133,14 @@ const App = () => {
 
   const likeBlog = id => {
     const blog = blogs.find(b => b.id === id);
+    const user = blog.user;
     const liked = { ...blog, likes: blog.likes + 1 };
-    console.log(liked.user.username);
 
     blogService.update(id, liked).then(returnedBlog => {
+      const updatedBlog = { ...returnedBlog, user: user };
       setBlogs(
-        sortByLikes(blogs.map(b => (b.id !== blog.id ? b : returnedBlog)))
+        sortByLikes(blogs.map(b => (b.id !== blog.id ? b : updatedBlog)))
       );
-      console.log(returnedBlog.user.username);
     });
   };
 
@@ -179,7 +179,6 @@ const App = () => {
         <Blog
           key={blog.id}
           blog={blog}
-          addedBy={blog.user}
           handleDelete={deleteBlog}
           user={user}
           likeBlog={likeBlog}
