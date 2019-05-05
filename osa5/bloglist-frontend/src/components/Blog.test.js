@@ -1,10 +1,7 @@
 import React from "react";
-import { render, fireEvent, cleanup } from "react-testing-library";
-import "jest-dom/extend-expect";
+import { render, fireEvent } from "react-testing-library";
 import Blog from "./Blog";
 //import { prettyDOM } from "dom-testing-library";
-
-afterEach(cleanup);
 
 describe("<Blog />", () => {
   test("at start the children are not displayed", () => {
