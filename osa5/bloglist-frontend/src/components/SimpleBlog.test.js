@@ -1,7 +1,6 @@
 import React from "react";
 import { render, fireEvent, cleanup } from "react-testing-library";
 import "jest-dom/extend-expect";
-import { prettyDOM } from "dom-testing-library";
 import SimpleBlog from "./SimpleBlog";
 
 afterEach(cleanup);
@@ -15,17 +14,12 @@ test("renders content", () => {
 
   const component = render(<SimpleBlog blog={blog} />);
 
-  //component.debug();
-
   const title = component.container.querySelector(".title");
   const author = component.container.querySelector(".author");
-  //console.log(prettyDOM(title));
-  //console.log(prettyDOM(author));
   expect(author).toHaveTextContent("FreeCodeCamp");
   expect(title).toHaveTextContent("Coding Blog");
 
   const likes = component.container.querySelector(".likes");
-  //console.log(prettyDOM(likes));
   expect(likes).toHaveTextContent("3");
 });
 
