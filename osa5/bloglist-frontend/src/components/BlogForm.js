@@ -1,28 +1,27 @@
 import React from "react";
 
-const BlogForm = ({
-  handleSubmit,
-  handleNewTitle,
-  handleNewAuthor,
-  handleNewUrl,
-  newTitle,
-  newAuthor,
-  newUrl
-}) => {
+const BlogForm = ({ handleSubmit, newTitle, newAuthor, newUrl }) => {
+  /* eslint-disable no-unused-vars */
+  let reset, title, author, url;
+  ({ reset, ...title } = newTitle);
+  ({ reset, ...author } = newAuthor);
+  ({ reset, ...url } = newUrl);
+  /* eslint-enable no-unused-vars */
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <div>
           Title:
-          <input value={newTitle} onChange={handleNewTitle} />
+          <input {...title} />
         </div>
         <div>
           Author:
-          <input value={newAuthor} onChange={handleNewAuthor} />
+          <input {...author} />
         </div>
         <div>
           Url:
-          <input value={newUrl} onChange={handleNewUrl} />
+          <input {...url} />
         </div>
         <button type="submit">save</button>
       </form>

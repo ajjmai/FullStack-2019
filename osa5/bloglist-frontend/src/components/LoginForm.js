@@ -1,33 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const LoginForm = ({
-  handleSubmit,
-  handleUsernameChange,
-  handlePasswordChange,
-  username,
-  password
-}) => {
+const LoginForm = ({ handleSubmit, username, password }) => {
+  /* eslint-disable no-unused-vars */
+  let reset, un, pw;
+  ({ reset, ...un } = username);
+  ({ reset, ...pw } = password);
+  /* eslint-enable no-unused-vars */
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <div>
           username
-          <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={handleUsernameChange}
-          />
+          <input {...un} />
         </div>
         <div>
           password
-          <input
-            type="password"
-            value={password}
-            name="Password"
-            onChange={handlePasswordChange}
-          />
+          <input {...pw} />
         </div>
         <button className="loginButton" type="submit">
           Log in
@@ -39,10 +29,8 @@ const LoginForm = ({
 
 LoginForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  handleUsernameChange: PropTypes.func.isRequired,
-  handlePasswordChange: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired
+  username: PropTypes.object.isRequired,
+  password: PropTypes.object.isRequired
 };
 
 export default LoginForm;
