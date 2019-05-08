@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
+import User from "./components/User";
 import Blog from "./components/Blog";
+import UserList from "./components/UserList";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import "./index.css";
-import BlogForm from "./components/BlogForm";
-import Togglable from "./components/Togglable";
+import BlogList from "./components/BlogList";
 import LoginForm from "./components/LoginForm";
-import { useField } from "./hooks";
+import { useField, useResource } from "./hooks";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect,
+  withRouter
+} from "react-router-dom";
 
 const Notification = ({ message }) => {
   if (message === null) {
@@ -22,13 +30,17 @@ const ErrorMessage = ({ message }) => {
   return <div className="error message">{message}</div>;
 };
 
+const LoggedIn = ({ user, handleLogout }) => {
+  return (
+    <span>
+      <em>{user.name === null ? user.username : user.name} is logged in</em>
+      <button onClick={handleLogout}>Log out</button>
+    </span>
+  );
+};
+
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  //const [newTitle, setNewTitle] = useState("");
-  //const [newAuthor, setNewAuthor] = useState("");
-  //const [newUrl, setNewUrl] = useState("");
-  //const [username, setUsername] = useState("");
-  //const [password, setPassword] = useState("");
   const [notificationMessage, setNotificationMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [user, setUser] = useState(null);
@@ -38,6 +50,7 @@ const App = () => {
   const newTitle = useField("text");
   const newAuthor = useField("text");
   const newUrl = useField("text");
+  const users = useResource("http://localhost:3003/api/users");
 
   useEffect(() => {
     blogService.getAll().then(blogs => setBlogs(blogs));
@@ -139,6 +152,10 @@ const App = () => {
     }
   };
 
+  const blogById = id => blogs.find(blog => blog.id === id);
+
+  const userById = id => users.find(user => user.id === id);
+
   const likeBlog = id => {
     const blog = blogs.find(b => b.id === id);
     const user = blog.user;
@@ -170,50 +187,62 @@ const App = () => {
     </div>
   );
 
-  const blogList = user => (
-    <div className="blogList">
-      {user.name === null ? user.username : user.name} is logged in
-      <br />
-      <br />
-      <div>
-        <button onClick={handleLogout}>Log out</button>
-      </div>
-      <h2>Add new blog</h2>
-      {blogForm()}
-      <h2 className="blogs">Blogs</h2>
-      {blogs.map(blog => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          handleDelete={deleteBlog}
-          user={user}
-          likeBlog={likeBlog}
-        />
-      ))}
-    </div>
-  );
+  const maimei = users.find(u => u.username === "maimei");
 
-  const blogForm = () => {
-    return (
-      <div>
-        <Togglable buttonLabel="Add blog">
-          <BlogForm
-            newTitle={newTitle}
-            newAuthor={newAuthor}
-            newUrl={newUrl}
-            handleSubmit={addBlog}
-          />
-        </Togglable>
-      </div>
-    );
-  };
+  const padding = { padding: 5 };
 
   return (
     <div>
-      <h1>Bloglist</h1>
-      <Notification message={notificationMessage} />
-      <ErrorMessage message={errorMessage} />
-      <div>{user === null ? loginForm() : blogList(user)}</div>
+      <Router>
+        <div>
+          <div>
+            <Link style={padding} to="/">
+              blogs
+            </Link>
+            <Link style={padding} to="/users">
+              users
+            </Link>
+            {user ? (
+              <LoggedIn user={user} handleLogout={handleLogout} />
+            ) : (
+              <p />
+            )}
+          </div>
+          <h1>Bloglist</h1>
+          <Notification message={notificationMessage} />
+          <ErrorMessage message={errorMessage} />
+          <Route
+            exact
+            path="/"
+            render={() =>
+              user ? (
+                <BlogList
+                  blogs={blogs}
+                  newTitle={newTitle}
+                  newAuthor={newAuthor}
+                  newUrl={newUrl}
+                  addBlog={addBlog}
+                />
+              ) : (
+                loginForm()
+              )
+            }
+          />
+          <Route
+            exact
+            path="/users"
+            render={() => <UserList users={users} />}
+          />
+          <Route
+            path="/blogs/:id"
+            render={({ match }) => <Blog blog={blogById(match.params.id)} />}
+          />
+          <Route
+            path="/users/:id"
+            render={({ match }) => <User user={userById(match.params.id)} />}
+          />
+        </div>
+      </Router>
     </div>
   );
 };

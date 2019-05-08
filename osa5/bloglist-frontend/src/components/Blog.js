@@ -1,31 +1,41 @@
-import React, { useState } from "react";
+import React from "react";
 
 const Blog = ({ blog, handleDelete, user, likeBlog }) => {
-  const [showBlogInfo, setShowBlogInfo] = useState(false);
+  console.log(blog);
 
-  const showWhenVisible = { display: showBlogInfo ? "" : "none" };
+  if (blog === undefined) {
+    return null;
+  }
+
+  if (user === undefined) {
+    return (
+      <div>
+        <h2 className="button blogtitle">
+          {blog.title} by {blog.author}
+        </h2>
+        <div className="togglableContent">
+          <a href={blog.url}>{blog.url}</a>
+
+          <p>
+            {blog.likes} likes{" "}
+            <button onClick={() => likeBlog(blog.id)}>like</button>
+          </p>
+          <p>added by {blog.user.name}</p>
+        </div>
+      </div>
+    );
+  }
+
   const showDeleteButton = {
     display: user.username === blog.user.username ? "" : "none"
   };
 
-  const toggleVisibility = () => {
-    setShowBlogInfo(!showBlogInfo);
-  };
-
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: "solid",
-    borderWidth: 1,
-    marginBottom: 5
-  };
-
   return (
-    <div style={blogStyle}>
-      <div onClick={toggleVisibility} className="button blogtitle">
+    <div>
+      <h2 className="button blogtitle">
         {blog.title} by {blog.author}
-      </div>
-      <div style={showWhenVisible} className="togglableContent">
+      </h2>
+      <div className="togglableContent">
         <a href={blog.url}>{blog.url}</a>
 
         <p>

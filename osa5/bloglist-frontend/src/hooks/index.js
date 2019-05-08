@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 export const useField = ({ type, name }) => {
   const [value, setValue] = useState("");
@@ -12,4 +13,16 @@ export const useField = ({ type, name }) => {
   };
 
   return { type, value, onChange, reset, name };
+};
+
+export const useResource = baseUrl => {
+  const [resources, setResources] = useState([]);
+
+  useEffect(() => {
+    axios.get(baseUrl).then(response => {
+      setResources(response.data);
+    });
+  }, []);
+
+  return resources;
 };
