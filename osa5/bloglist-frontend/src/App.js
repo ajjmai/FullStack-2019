@@ -8,13 +8,7 @@ import "./index.css";
 import BlogList from "./components/BlogList";
 import LoginForm from "./components/LoginForm";
 import { useField, useResource } from "./hooks";
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Redirect,
-  withRouter
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 const Notification = ({ message }) => {
   if (message === null) {
@@ -187,8 +181,6 @@ const App = () => {
     </div>
   );
 
-  const maimei = users.find(u => u.username === "maimei");
-
   const padding = { padding: 5 };
 
   return (
@@ -235,7 +227,14 @@ const App = () => {
           />
           <Route
             path="/blogs/:id"
-            render={({ match }) => <Blog blog={blogById(match.params.id)} />}
+            render={({ match }) => (
+              <Blog
+                blog={blogById(match.params.id)}
+                likeBlog={likeBlog}
+                handleDelete={deleteBlog}
+                user={user}
+              />
+            )}
           />
           <Route
             path="/users/:id"
