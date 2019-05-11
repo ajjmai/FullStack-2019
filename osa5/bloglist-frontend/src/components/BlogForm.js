@@ -1,4 +1,5 @@
 import React from "react";
+import { Form, Button } from "semantic-ui-react";
 
 const BlogForm = ({ handleSubmit, newTitle, newAuthor, newUrl }) => {
   /* eslint-disable no-unused-vars */
@@ -8,23 +9,27 @@ const BlogForm = ({ handleSubmit, newTitle, newAuthor, newUrl }) => {
   ({ reset, ...url } = newUrl);
   /* eslint-enable no-unused-vars */
 
+  const margin = { marginTop: 10, marginBottom: 10 };
+
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          Title:
+      <Form onSubmit={handleSubmit}>
+        <Form.Field>
+          <label>Title:</label>
           <input {...title} />
-        </div>
-        <div>
-          Author:
+        </Form.Field>
+        <Form.Field>
+          <label>Author:</label>
           <input {...author} />
-        </div>
-        <div>
-          Url:
+        </Form.Field>
+        <Form.Field>
+          <label>URL:</label>
           <input {...url} />
-        </div>
-        <button type="submit">save</button>
-      </form>
+        </Form.Field>
+        <Button style={margin} type="submit">
+          save
+        </Button>
+      </Form>
     </div>
   );
 };

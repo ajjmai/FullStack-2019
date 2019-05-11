@@ -8,7 +8,13 @@ import "./index.css";
 import BlogList from "./components/BlogList";
 import LoginForm from "./components/LoginForm";
 import { useField, useResource } from "./hooks";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect
+} from "react-router-dom";
+import { Container, Button, ButtonOr } from "semantic-ui-react";
 
 const Notification = ({ message }) => {
   if (message === null) {
@@ -25,10 +31,16 @@ const ErrorMessage = ({ message }) => {
 };
 
 const LoggedIn = ({ user, handleLogout }) => {
+  const buttonStyle = {
+    padding: 5,
+    margin: 5
+  };
   return (
     <span>
       <em>{user.name === null ? user.username : user.name} is logged in</em>
-      <button onClick={handleLogout}>Log out</button>
+      <Button style={buttonStyle} onClick={handleLogout}>
+        Log out
+      </Button>
     </span>
   );
 };
@@ -92,6 +104,8 @@ const App = () => {
       setNotificationMessage(null);
     }, 5000);
     setUser(null);
+    username.reset();
+    password.reset();
     window.localStorage.clear();
   };
 
@@ -184,65 +198,69 @@ const App = () => {
   const padding = { padding: 5 };
 
   return (
-    <div>
-      <Router>
-        <div>
+    <Container>
+      <div>
+        <Router>
           <div>
-            <Link style={padding} to="/">
-              blogs
-            </Link>
-            <Link style={padding} to="/users">
-              users
-            </Link>
-            {user ? (
-              <LoggedIn user={user} handleLogout={handleLogout} />
-            ) : (
-              <p />
-            )}
-          </div>
-          <h1>Bloglist</h1>
-          <Notification message={notificationMessage} />
-          <ErrorMessage message={errorMessage} />
-          <Route
-            exact
-            path="/"
-            render={() =>
-              user ? (
-                <BlogList
-                  blogs={blogs}
-                  newTitle={newTitle}
-                  newAuthor={newAuthor}
-                  newUrl={newUrl}
-                  addBlog={addBlog}
-                />
+            <div>
+              <Link style={padding} to="/">
+                blogs
+              </Link>
+              <Link style={padding} to="/users">
+                users
+              </Link>
+              {user ? (
+                <LoggedIn user={user} handleLogout={handleLogout} />
               ) : (
-                loginForm()
-              )
-            }
-          />
-          <Route
-            exact
-            path="/users"
-            render={() => <UserList users={users} />}
-          />
-          <Route
-            path="/blogs/:id"
-            render={({ match }) => (
-              <Blog
-                blog={blogById(match.params.id)}
-                likeBlog={likeBlog}
-                handleDelete={deleteBlog}
-                user={user}
-              />
-            )}
-          />
-          <Route
-            path="/users/:id"
-            render={({ match }) => <User user={userById(match.params.id)} />}
-          />
-        </div>
-      </Router>
-    </div>
+                <p />
+              )}
+            </div>
+            <h1>Bloglist</h1>
+            <Notification message={notificationMessage} />
+            <ErrorMessage message={errorMessage} />
+            <Route
+              exact
+              path="/"
+              render={() =>
+                user ? (
+                  <BlogList
+                    blogs={blogs}
+                    newTitle={newTitle}
+                    newAuthor={newAuthor}
+                    newUrl={newUrl}
+                    addBlog={addBlog}
+                  />
+                ) : (
+                  loginForm()
+                )
+              }
+            />
+            <Route
+              exact
+              path="/users"
+              render={() =>
+                user ? <UserList users={users} /> : <Redirect to="/" />
+              }
+            />
+            <Route
+              path="/blogs/:id"
+              render={({ match }) => (
+                <Blog
+                  blog={blogById(match.params.id)}
+                  likeBlog={likeBlog}
+                  handleDelete={deleteBlog}
+                  user={user}
+                />
+              )}
+            />
+            <Route
+              path="/users/:id"
+              render={({ match }) => <User user={userById(match.params.id)} />}
+            />
+          </div>
+        </Router>
+      </div>
+    </Container>
   );
 };
 

@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Form, Button } from "semantic-ui-react";
 
 const LoginForm = ({ handleSubmit, username, password }) => {
   /* eslint-disable no-unused-vars */
@@ -10,19 +11,19 @@ const LoginForm = ({ handleSubmit, username, password }) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          username
+      <Form onSubmit={handleSubmit}>
+        <Form.Field>
+          <label>username</label>
           <input {...un} />
-        </div>
-        <div>
-          password
+        </Form.Field>
+        <Form.Field>
+          <label>password</label>
           <input {...pw} />
-        </div>
-        <button className="loginButton" type="submit">
+        </Form.Field>
+        <Button className="loginButton" type="submit">
           Log in
-        </button>
-      </form>
+        </Button>
+      </Form>
     </div>
   );
 };

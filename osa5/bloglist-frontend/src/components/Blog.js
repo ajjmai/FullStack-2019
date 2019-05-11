@@ -1,8 +1,9 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
 
 const Blog = ({ blog, handleDelete, user, likeBlog }) => {
   if (blog === undefined || user === null) {
-    return null;
+    return <Redirect to="/" />;
   }
 
   const showDeleteButton = {

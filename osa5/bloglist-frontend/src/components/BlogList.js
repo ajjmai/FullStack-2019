@@ -1,6 +1,7 @@
 import React from "react";
 import BlogFormView from "./BlogFormView";
 import { Link } from "react-router-dom";
+import { Table } from "semantic-ui-react";
 
 const BlogList = ({ blogs, newTitle, newAuthor, newUrl, addBlog }) => {
   const blogStyle = {
@@ -13,7 +14,7 @@ const BlogList = ({ blogs, newTitle, newAuthor, newUrl, addBlog }) => {
 
   return (
     <div className="blogList">
-      <h2 className="blogs">Blogs</h2>
+      <h3 className="blogs">Add new blog</h3>
       <BlogFormView
         newTitle={newTitle}
         newAuthor={newAuthor}
@@ -21,13 +22,20 @@ const BlogList = ({ blogs, newTitle, newAuthor, newUrl, addBlog }) => {
         addBlog={addBlog}
       />
       <div>
-        {blogs.map(blog => (
-          <p key={blog.id} style={blogStyle}>
-            <Link to={`/blogs/${blog.id}`}>
-              {blog.title} by {blog.author}
-            </Link>
-          </p>
-        ))}
+        <h2 className="blogs">Blogs</h2>
+        <Table striped celled>
+          <Table.Body>
+            {blogs.map(blog => (
+              <Table.Row key={blog.id} style={blogStyle}>
+                <Table.Cell>
+                  <Link to={`/blogs/${blog.id}`}>
+                    {blog.title} by {blog.author}
+                  </Link>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
       </div>
     </div>
   );
