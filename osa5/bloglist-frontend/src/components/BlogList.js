@@ -11,6 +11,9 @@ const BlogList = ({ blogs, newTitle, newAuthor, newUrl, addBlog }) => {
     borderWidth: 1,
     marginBottom: 5
   };
+  const textColor = {
+    color: "#551a8b"
+  };
 
   return (
     <div className="blogList">
@@ -23,12 +26,12 @@ const BlogList = ({ blogs, newTitle, newAuthor, newUrl, addBlog }) => {
       />
       <div>
         <h2 className="blogs">Blogs</h2>
-        <Table striped celled>
+        <Table color="violet" striped celled>
           <Table.Body>
             {blogs.map(blog => (
               <Table.Row key={blog.id} style={blogStyle}>
                 <Table.Cell>
-                  <Link to={`/blogs/${blog.id}`}>
+                  <Link to={`/blogs/${blog.id}`} style={textColor}>
                     {blog.title} by {blog.author}
                   </Link>
                 </Table.Cell>

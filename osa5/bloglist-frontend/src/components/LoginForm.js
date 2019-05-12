@@ -20,7 +20,7 @@ const LoginForm = ({ handleSubmit, username, password }) => {
           <label>password</label>
           <input {...pw} />
         </Form.Field>
-        <Button className="loginButton" type="submit">
+        <Button color="violet" className="loginButton" type="submit">
           Log in
         </Button>
       </Form>

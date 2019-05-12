@@ -1,5 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
+import { Button } from "semantic-ui-react";
 
 const Blog = ({ blog, handleDelete, user, likeBlog }) => {
   if (blog === undefined || user === null) {
@@ -10,6 +11,8 @@ const Blog = ({ blog, handleDelete, user, likeBlog }) => {
     display: user.username === blog.user.username ? "" : "none"
   };
 
+  const likes = blog.likes;
+
   return (
     <div>
       <h2 className="button blogtitle">
@@ -17,16 +20,31 @@ const Blog = ({ blog, handleDelete, user, likeBlog }) => {
       </h2>
       <div className="togglableContent">
         <a href={blog.url}>{blog.url}</a>
-
-        <p>
-          {blog.likes} likes{" "}
-          <button onClick={() => likeBlog(blog.id)}>like</button>
-        </p>
+        <br />
+        <br />
+        <Button
+          color="red"
+          content="like"
+          icon="heart"
+          label={{
+            basic: true,
+            color: "red",
+            pointing: "left",
+            content: likes
+          }}
+          onClick={() => likeBlog(blog.id)}
+        />
+        <br />
+        <br />
         <p>added by {blog.user.name}</p>
 
-        <button style={showDeleteButton} onClick={() => handleDelete(blog.id)}>
+        <Button
+          color="violet"
+          style={showDeleteButton}
+          onClick={() => handleDelete(blog.id)}
+        >
           delete
-        </button>
+        </Button>
       </div>
     </div>
   );

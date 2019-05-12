@@ -3,10 +3,14 @@ import { Link } from "react-router-dom";
 import { Table } from "semantic-ui-react";
 
 const UserList = ({ users }) => {
+  const textColor = {
+    color: "#551a8b"
+  };
+
   return (
     <div>
       <h2>Users</h2>
-      <Table striped celled>
+      <Table color="violet" striped celled>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>user</Table.HeaderCell>
@@ -17,7 +21,9 @@ const UserList = ({ users }) => {
           {users.map(user => (
             <Table.Row key={user.id}>
               <Table.Cell>
-                <Link to={`/users/${user.id}`}>{user.name}</Link>
+                <Link to={`/users/${user.id}`} style={textColor}>
+                  {user.name}
+                </Link>
               </Table.Cell>
               <Table.Cell>{user.blogs.length}</Table.Cell>
             </Table.Row>

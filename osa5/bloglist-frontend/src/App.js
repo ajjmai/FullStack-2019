@@ -14,20 +14,20 @@ import {
   Link,
   Redirect
 } from "react-router-dom";
-import { Container, Button, ButtonOr } from "semantic-ui-react";
+import { Container, Button, Message, Menu } from "semantic-ui-react";
 
 const Notification = ({ message }) => {
   if (message === null) {
     return null;
   }
-  return <div className="notification message">{message}</div>;
+  return <Message success>{message}</Message>;
 };
 
 const ErrorMessage = ({ message }) => {
   if (message === null) {
     return null;
   }
-  return <div className="error message">{message}</div>;
+  return <Message negative>{message}</Message>;
 };
 
 const LoggedIn = ({ user, handleLogout }) => {
@@ -38,7 +38,7 @@ const LoggedIn = ({ user, handleLogout }) => {
   return (
     <span>
       <em>{user.name === null ? user.username : user.name} is logged in</em>
-      <Button style={buttonStyle} onClick={handleLogout}>
+      <Button inverted style={buttonStyle} onClick={handleLogout}>
         Log out
       </Button>
     </span>
@@ -199,67 +199,75 @@ const App = () => {
 
   return (
     <Container>
-      <div>
-        <Router>
-          <div>
-            <div>
+      <Router>
+        <div>
+          <Menu inverted color="violet">
+            <Menu.Item link>
               <Link style={padding} to="/">
                 blogs
               </Link>
+            </Menu.Item>
+            <Menu.Item link>
               <Link style={padding} to="/users">
                 users
               </Link>
+            </Menu.Item>
+            <Menu.Item>
               {user ? (
                 <LoggedIn user={user} handleLogout={handleLogout} />
               ) : (
-                <p />
+                <Link to="/login">login</Link>
               )}
-            </div>
-            <h1>Bloglist</h1>
-            <Notification message={notificationMessage} />
-            <ErrorMessage message={errorMessage} />
-            <Route
-              exact
-              path="/"
-              render={() =>
-                user ? (
-                  <BlogList
-                    blogs={blogs}
-                    newTitle={newTitle}
-                    newAuthor={newAuthor}
-                    newUrl={newUrl}
-                    addBlog={addBlog}
-                  />
-                ) : (
-                  loginForm()
-                )
-              }
-            />
-            <Route
-              exact
-              path="/users"
-              render={() =>
-                user ? <UserList users={users} /> : <Redirect to="/" />
-              }
-            />
-            <Route
-              path="/blogs/:id"
-              render={({ match }) => (
-                <Blog
-                  blog={blogById(match.params.id)}
-                  likeBlog={likeBlog}
-                  handleDelete={deleteBlog}
-                  user={user}
+            </Menu.Item>
+          </Menu>
+          <h1>Bloglist</h1>
+          <Notification message={notificationMessage} />
+          <ErrorMessage message={errorMessage} />
+          <Route
+            exact
+            path="/"
+            render={() =>
+              user ? (
+                <BlogList
+                  blogs={blogs}
+                  newTitle={newTitle}
+                  newAuthor={newAuthor}
+                  newUrl={newUrl}
+                  addBlog={addBlog}
                 />
-              )}
-            />
-            <Route
-              path="/users/:id"
-              render={({ match }) => <User user={userById(match.params.id)} />}
-            />
-          </div>
-        </Router>
-      </div>
+              ) : (
+                <p>You have to log in to view the bloglist!</p>
+              )
+            }
+          />
+          <Route
+            exact
+            path="/users"
+            render={() =>
+              user ? <UserList users={users} /> : <Redirect to="/" />
+            }
+          />
+          <Route
+            path="/login"
+            render={() => (user ? <Redirect to="/" /> : loginForm())}
+          />
+          <Route
+            path="/blogs/:id"
+            render={({ match }) => (
+              <Blog
+                blog={blogById(match.params.id)}
+                likeBlog={likeBlog}
+                handleDelete={deleteBlog}
+                user={user}
+              />
+            )}
+          />
+          <Route
+            path="/users/:id"
+            render={({ match }) => <User user={userById(match.params.id)} />}
+          />
+        </div>
+      </Router>
     </Container>
   );
 };

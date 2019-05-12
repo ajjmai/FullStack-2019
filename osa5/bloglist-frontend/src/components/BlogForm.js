@@ -26,7 +26,7 @@ const BlogForm = ({ handleSubmit, newTitle, newAuthor, newUrl }) => {
           <label>URL:</label>
           <input {...url} />
         </Form.Field>
-        <Button style={margin} type="submit">
+        <Button color="violet" style={margin} type="submit">
           save
         </Button>
       </Form>
