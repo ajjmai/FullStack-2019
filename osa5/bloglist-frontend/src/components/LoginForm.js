@@ -14,13 +14,18 @@ const LoginForm = ({ handleSubmit, username, password }) => {
       <Form onSubmit={handleSubmit}>
         <Form.Field>
           <label>username</label>
-          <input {...un} />
+          <input id="username" {...un} />
         </Form.Field>
         <Form.Field>
           <label>password</label>
-          <input {...pw} />
+          <input id="password" {...pw} />
         </Form.Field>
-        <Button color="violet" className="loginButton" type="submit">
+        <Button
+          id="login_button"
+          color="violet"
+          className="loginButton"
+          type="submit"
+        >
           Log in
         </Button>
       </Form>
