@@ -106,12 +106,6 @@ const Footer = () => (
   </div>
 );
 
-const Component = props => {
-  const { a, b } = props;
-  console.log(a, b);
-  return <button>press</button>;
-};
-
 const Notification = ({ message }) => {
   if (message === null) {
     return null;
@@ -216,7 +210,6 @@ const App = () => {
   return (
     <div>
       <h1>Software anecdotes</h1>
-      <Component a={1} b={2} />
       <Notification message={notification} />
       <Menu anecdotes={anecdotes} addNew={addNew} anecdoteById={anecdoteById} />
       <Footer />
