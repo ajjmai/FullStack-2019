@@ -16,15 +16,15 @@ const BlogForm = ({ handleSubmit, newTitle, newAuthor, newUrl }) => {
       <Form onSubmit={handleSubmit}>
         <Form.Field>
           <label>Title:</label>
-          <input {...title} />
+          <input id="title" {...title} />
         </Form.Field>
         <Form.Field>
           <label>Author:</label>
-          <input {...author} />
+          <input id="author" {...author} />
         </Form.Field>
         <Form.Field>
           <label>URL:</label>
-          <input {...url} />
+          <input id="url" {...url} />
         </Form.Field>
         <Button color="violet" style={margin} type="submit">
           save
