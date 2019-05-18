@@ -1,13 +1,21 @@
 import React, { useState } from "react";
 
-const EditAuthor = props => {
+const EditAuthor = ({ show, result, editAuthor }) => {
   const [name, setName] = useState("");
   const [born, setBirthYear] = useState("");
+
+  if (!show) {
+    return null;
+  }
+
+  if (result.loading) {
+    return <div>loading...</div>;
+  }
 
   const submit = async e => {
     e.preventDefault();
 
-    await props.editAuthor({
+    await editAuthor({
       variables: { name, born }
     });
 
@@ -15,16 +23,24 @@ const EditAuthor = props => {
     setBirthYear("");
   };
 
+  const authors = result.data.allAuthors;
+
   return (
     <div>
       <h2>set birthyear</h2>
       <form onSubmit={submit}>
         <div>
           name{" "}
-          <input
-            value={name}
-            onChange={({ target }) => setName(target.value)}
-          />
+          <select value={name} onChange={({ target }) => setName(target.value)}>
+            <option value="" disabled>
+              choose
+            </option>
+            {authors.map(a => (
+              <option key={a.name} value={a.name}>
+                {a.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           born{" "}

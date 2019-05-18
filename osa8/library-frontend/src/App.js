@@ -91,7 +91,11 @@ const App = () => {
       <Authors show={page === "authors"} result={result_authors} />
       <Books show={page === "books"} result={result_books} />
       <NewBook show={page === "add"} addBook={addBook} />
-      <EditAuthor show={page === "authors"} editAuthor={editAuthor} />
+      <EditAuthor
+        show={page === "authors"}
+        result={result_authors}
+        editAuthor={editAuthor}
+      />
     </div>
   );
 };
