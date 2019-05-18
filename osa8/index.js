@@ -78,31 +78,12 @@ const books = [
   }
 ];
 
-const persons = [
-  {
-    name: "Arto Hellas",
-    phone: "040-123543",
-    street: "Tapiolankatu 5 A",
-    city: "Espoo"
-  },
-  {
-    name: "Matti Luukkainen",
-    phone: "040-432342",
-    street: "Malminkaari 10 A",
-    city: "Helsinki"
-  },
-  {
-    name: "Venla Ruuska",
-    street: "Nallemäentie 22 C",
-    city: "Helsinki"
-  }
-];
-
 const typeDefs = gql`
   type Book {
-    name: String!
+    title: String!
     author: String!
     published: Int!
+    genres: [String]
   }
 
   type Author {
@@ -113,13 +94,15 @@ const typeDefs = gql`
   type Query {
     bookCount: Int!
     authorCount: Int!
+    allBooks: [Book!]!
   }
 `;
 
 const resolvers = {
   Query: {
     bookCount: () => books.length,
-    authorCount: () => authors.length
+    authorCount: () => authors.length,
+    allBooks: () => books
   }
 };
 
