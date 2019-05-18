@@ -1,8 +1,8 @@
 import React from "react";
-import { Query } from "react-apollo";
-import { gql } from "apollo-boost";
+import { useApolloClient } from "react-apollo-hooks";
 
 const Books = ({ result, show }) => {
+  const client = useApolloClient();
   if (!show) {
     return null;
   }
