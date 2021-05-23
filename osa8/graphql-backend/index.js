@@ -9,7 +9,7 @@ mongoose.set("useFindAndModify", false);
 mongoose.set("useCreateIndex", true);
 
 const MONGODB_URI =
-  "mongodb+srv://fullstack:fakdym-kimser-6jobbU@cluster0-rcvs5.mongodb.net/graphql?retryWrites=true";
+  "mongodb+srv://fullstack:pw@cluster0-rcvs5.mongodb.net/graphql?retryWrites=true";
 
 const JWT_SECRET = "Bearer";
 
